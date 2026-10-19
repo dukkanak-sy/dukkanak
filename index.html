@@ -3,160 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دُكّانك - منصة المتاجر المصغرة</title>
+    <title>دُكّانك - منصة المتاجر المصغرة الفاخرة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-        body { font-family: 'Cairo', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        body { font-family: 'Tajawal', sans-serif; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col pb-20">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col pb-24 selection:bg-amber-500 selection:text-slate-900">
 
-    <!-- العنوان العلوي -->
-    <header class="bg-emerald-600 text-white p-4 shadow-md text-center sticky top-0 z-40">
-        <h1 id="headerTitle" class="text-lg font-bold"><i class="fa-solid fa-store ml-2"></i>منصة دُكّانك</h1>
+    <!-- العنوان العلوي الفاخر -->
+    <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 p-4 sticky top-0 z-40 flex justify-between items-center px-6">
+        <div class="flex items-center gap-2">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-store"></i>
+            </div>
+            <h1 class="text-lg font-black tracking-wider bg-gradient-to-r from-white via-slate-200 to-amber-400 bg-clip-text text-transparent">دُكّانك</h1>
+        </div>
+        <span class="text-xs bg-slate-800 border border-slate-700 text-amber-400 px-2.5 py-1 rounded-full font-semibold">النسخة الاحترافية</span>
     </header>
 
-    <!-- المحتوى الرئيسي (يتغير حسب التبويب السفلي) -->
-    <main class="flex-grow container mx-auto p-4 max-w-md">
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow container mx-auto p-4 max-w-md space-y-4">
 
         <!-- 1. الرئيسية: عرض كل المتاجر -->
         <div id="tabHome" class="space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border text-center">
-                <h2 class="font-bold text-gray-900 text-lg">المتاجر المتاحة</h2>
-                <p class="text-xs text-gray-500 mt-1">اكتشف المتاجر المنزلية وتسوق بسهولة</p>
+            <div class="bg-gradient-to-br from-slate-800 to-slate-850 p-5 rounded-2xl border border-slate-700/60 shadow-xl relative overflow-hidden">
+                <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                <h2 class="font-black text-xl text-white tracking-wide">المتاجر المميزة</h2>
+                <p class="text-xs text-slate-400 mt-1">اكتشف أرقى المنتجات المنزلية وتسوّق بكل سهولة</p>
             </div>
-            <div id="storesList" class="space-y-3">
-                <!-- يتم تعبئتها تلقائياً -->
-            </div>
+            <div id="storesList" class="space-y-3"></div>
         </div>
 
-        <!-- عرض منتجات متجر محدد (مخفي افتراضياً، يظهر عند اختيار متجر من الرئيسية) -->
+        <!-- عرض منتجات متجر محدد -->
         <div id="storeProductsView" class="space-y-4 hidden">
-            <button onclick="backToHome()" class="text-xs bg-gray-200 hover:bg-gray-300 px-3 py-1.5 rounded-lg font-semibold mb-2">
-                <i class="fa-solid fa-arrow-right ml-1"></i> العودة للمتاجر
+            <button onclick="backToHome()" class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-2 w-fit">
+                <i class="fa-solid fa-arrow-right"></i> العودة لقائمة المتاجر
             </button>
-            <div class="bg-white p-4 rounded-xl shadow-sm border text-center">
-                <h2 id="currentStoreNameTitle" class="font-bold text-gray-900 text-lg">اسم المتجر</h2>
-                <p class="text-xs text-gray-500">اختر منتجاتك وأرسل الطلب عبر واتساب</p>
+            <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 text-center shadow-lg">
+                <h2 id="currentStoreNameTitle" class="font-black text-xl text-white">اسم المتجر</h2>
+                <p class="text-xs text-slate-400 mt-1">اختر ما يناسبك وسيتم إرسال الطلب فوراً عبر واتساب</p>
             </div>
             <div id="storeItemsList" class="space-y-3"></div>
-            <!-- زر إتمام الطلب -->
-            <div class="bg-white p-4 rounded-xl shadow-lg border border-emerald-100 sticky bottom-20">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="font-bold text-gray-700">المجموع الكلي:</span>
-                    <span id="totalPrice" class="text-lg font-bold text-emerald-600">0$</span>
+            <!-- زر إتمام الطلب العائم الفاخر -->
+            <div class="bg-slate-800/90 backdrop-blur-md p-4 rounded-2xl border border-slate-700 shadow-2xl sticky bottom-24 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="font-bold text-slate-300 text-sm">المجموع الكلي:</span>
+                    <span id="totalPrice" class="text-xl font-black text-amber-400">0$</span>
                 </div>
-                <button onclick="sendOrderToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2">
-                    <i class="fa-brands fa-whatsapp text-xl"></i> إرسال الطلب عبر واتساب
+                <button onclick="sendOrderToWhatsApp()" class="w-full bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-emerald-900/40 transition flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> إتمام وإرسال الطلب للواتساب
                 </button>
             </div>
         </div>
 
         <!-- 2. بائع: إدارة متجرك وإحصائياتك -->
         <div id="tabSeller" class="space-y-4 hidden">
-            <div id="sellerSetupCard" class="bg-white p-4 rounded-xl shadow-sm border space-y-3">
-                <h2 class="font-bold text-gray-900">أنشئ متجرك الخاص</h2>
+            <div id="sellerSetupCard" class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                <div class="text-center space-y-1">
+                    <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-2xl flex items-center justify-center mx-auto text-xl border border-amber-500/20">
+                        <i class="fa-solid fa-shop"></i>
+                    </div>
+                    <h2 class="font-black text-lg text-white">أنشئ متجرك الاحترافي</h2>
+                    <p class="text-xs text-slate-400">ابدأ بعرض منتجاتك للزوار واجعل تجارتك رقمية</p>
+                </div>
                 <form onsubmit="createStore(event)" class="space-y-3">
-                    <input type="text" id="newStoreName" required class="w-full p-2.5 border rounded-lg text-sm" placeholder="اسم المتجر (مثال: حلويات أم أحمد)">
-                    <input type="text" id="newStorePhone" required class="w-full p-2.5 border rounded-lg text-sm" placeholder="رقم الواتساب (9639xxxxxxxx)">
-                    <button type="submit" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg text-sm">تسجيل المتجر</button>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">اسم المتجر</label>
+                        <input type="text" id="newStoreName" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl text-sm text-white outline-none focus:border-amber-500 transition" placeholder="مثال: متجر أبو نصرة">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">رقم الواتساب</label>
+                        <input type="text" id="newStorePhone" required class="w-full bg-slate-900 border border-slate-700 p-3 rounded-xl text-sm text-white outline-none focus:border-amber-500 transition" placeholder="9639xxxxxxxx">
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-black py-3 rounded-xl shadow-lg shadow-amber-500/20 transition text-sm">إطلاق المتجر الآن</button>
                 </form>
             </div>
 
             <div id="sellerDashboard" class="space-y-4 hidden">
-                <!-- إحصائيات التاجر -->
+                <!-- إحصائيات التاجر الفاخرة -->
                 <div class="grid grid-cols-3 gap-2 text-center">
-                    <div class="bg-white p-3 rounded-xl border shadow-sm">
-                        <span class="block text-xs text-gray-400">الزوار</span>
-                        <span id="statVisitors" class="font-bold text-emerald-600 text-base">14</span>
+                    <div class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 shadow-lg">
+                        <span class="block text-[11px] text-slate-400 font-medium">الزوار</span>
+                        <span id="statVisitors" class="font-black text-amber-400 text-lg mt-1 block">0</span>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border shadow-sm">
-                        <span class="block text-xs text-gray-400">الطلبات</span>
-                        <span id="statOrders" class="font-bold text-blue-600 text-base">3</span>
+                    <div class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 shadow-lg">
+                        <span class="block text-[11px] text-slate-400 font-medium">الطلبات</span>
+                        <span id="statOrders" class="font-black text-emerald-400 text-lg mt-1 block">0</span>
                     </div>
-                    <div class="bg-white p-3 rounded-xl border shadow-sm">
-                        <span class="block text-xs text-gray-400">الأرباح</span>
-                        <span id="statRevenue" class="font-bold text-amber-600 text-base">54$</span>
+                    <div class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 shadow-lg">
+                        <span class="block text-[11px] text-slate-400 font-medium">الأرباح</span>
+                        <span id="statRevenue" class="font-black text-sky-400 text-lg mt-1 block">0$</span>
                     </div>
                 </div>
 
                 <!-- إضافة منتج -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border">
-                    <h3 class="font-bold text-gray-900 mb-3 text-sm">إضافة منتج جديد لمتجرك</h3>
-                    <form onsubmit="addMerchantProduct(event)" class="space-y-2">
-                        <input type="text" id="pName" required class="w-full p-2 border rounded text-sm" placeholder="اسم المنتج">
-                        <input type="number" id="pPrice" required class="w-full p-2 border rounded text-sm" placeholder="السعر ($)">
-                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded text-sm">حفظ المنتج</button>
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl space-y-3">
+                    <h3 class="font-black text-white text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-circle-plus text-amber-400"></i> إضافة منتج جديد لمتجرك
+                    </h3>
+                    <form onsubmit="addMerchantProduct(event)" class="space-y-3">
+                        <input type="text" id="pName" required class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-xl text-sm text-white outline-none focus:border-amber-500" placeholder="اسم المنتج">
+                        <input type="number" id="pPrice" required class="w-full bg-slate-900 border border-slate-700 p-2.5 rounded-xl text-sm text-white outline-none focus:border-amber-500" placeholder="السعر ($)">
+                        <button type="submit" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl text-sm transition">حفظ المنتج</button>
                     </form>
                 </div>
 
                 <!-- قائمة منتجات التاجر -->
-                <div class="bg-white p-4 rounded-xl shadow-sm border">
-                    <h3 class="font-bold text-gray-900 mb-3 text-sm">منتجاتي</h3>
+                <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl space-y-3">
+                    <h3 class="font-black text-white text-sm">منتجاتي الحالية</h3>
                     <div id="myProductsList" class="space-y-2"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 3. مشتري: سلة الطلبات والمشتريات الحالية -->
+        <!-- 3. مشتري: سجل الطلبات والتقييم -->
         <div id="tabBuyer" class="space-y-4 hidden">
-            <div class="bg-white p-4 rounded-xl shadow-sm border text-center">
-                <h2 class="font-bold text-gray-900">سجل مشترياتي</h2>
-                <p class="text-xs text-gray-500 mt-1">الطلبات التي قمت بإرسالها مؤخراً</p>
+            <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl text-center space-y-1">
+                <h2 class="font-black text-white text-lg">سجل المشتريات والطلبات</h2>
+                <p class="text-xs text-slate-400">تابع طلباتك السابقة وقيم المتاجر بكل سهولة</p>
             </div>
-            <div id="buyerOrdersList" class="space-y-2">
-                <div class="bg-white p-3 rounded-xl border text-center text-xs text-gray-400">لا توجد طلبات سابقة مسجلة.</div>
-            </div>
+            <div id="buyerOrdersList" class="space-y-3"></div>
         </div>
 
-        <!-- 4. أنا: الملف الشخصي والإحصائيات الشخصية -->
+        <!-- 4. أنا: الملف الشخصي -->
         <div id="tabProfile" class="space-y-4 hidden">
-            <div class="bg-white p-6 rounded-xl shadow-sm border text-center space-y-2">
-                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
-                    <i class="fa-solid fa-user"></i>
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 shadow-xl text-center space-y-3">
+                <div class="w-16 h-16 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg">
+                    <i class="fa-solid fa-user-astronaut"></i>
                 </div>
-                <h2 class="font-bold text-gray-900 text-lg">حسابي الشخصي</h2>
-                <p class="text-xs text-gray-500">مستخدم نشط على منصة دُكّانك</p>
+                <div>
+                    <h2 class="font-black text-white text-lg">الملف الشخصي</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">عضو مميز في منصة دُكّانك</p>
+                </div>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border space-y-3">
-                <h3 class="font-bold text-gray-800 text-sm">ملخص استهلاكك كمشتري</h3>
-                <div class="flex justify-between text-sm border-b pb-2">
-                    <span class="text-gray-500">إجمالي ما أنفقته:</span>
-                    <span id="profileSpent" class="font-bold text-emerald-600">0$</span>
+            <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl space-y-4">
+                <h3 class="font-black text-white text-sm border-b border-slate-700 pb-2">إحصائياتك كمشتري</h3>
+                <div class="flex justify-between text-sm">
+                    <span class="text-slate-400">إجمالي المصروفات:</span>
+                    <span id="profileSpent" class="font-black text-amber-400">0$</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                    <span class="text-gray-500">عدد المتاجر التي تعاملت معها:</span>
-                    <span id="profileStoresCount" class="font-bold text-gray-800">0 متاجر</span>
+                    <span class="text-slate-400">المتاجر المتعامل معها:</span>
+                    <span id="profileStoresCount" class="font-black text-white">0 متاجر</span>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- الشريط السفلي للتنقل (Tabs) -->
-    <nav class="bg-white border-t fixed bottom-0 left-0 right-0 z-50 flex justify-around p-3 shadow-lg max-w-md mx-auto">
-        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-emerald-600 text-xs font-bold">
+    <!-- الشريط السفلي الفاخر (Bottom Navigation) -->
+    <nav class="bg-slate-900/90 backdrop-blur-md border-t border-slate-800 fixed bottom-0 left-0 right-0 z-50 flex justify-around p-2.5 shadow-2xl max-w-md mx-auto">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-amber-400 text-xs font-bold transition">
             <i class="fa-solid fa-store text-lg mb-1"></i> الرئيسية
         </button>
-        <button onclick="switchTab('seller')" id="nav-seller" class="flex flex-col items-center text-gray-400 text-xs font-bold">
+        <button onclick="switchTab('seller')" id="nav-seller" class="flex flex-col items-center text-slate-400 text-xs font-bold transition">
             <i class="fa-solid fa-shop text-lg mb-1"></i> بائع
         </button>
-        <button onclick="switchTab('buyer')" id="nav-buyer" class="flex flex-col items-center text-gray-400 text-xs font-bold">
+        <button onclick="switchTab('buyer')" id="nav-buyer" class="flex flex-col items-center text-slate-400 text-xs font-bold transition">
             <i class="fa-solid fa-bag-shopping text-lg mb-1"></i> مشتري
         </button>
-        <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-gray-400 text-xs font-bold">
+        <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center text-slate-400 text-xs font-bold transition">
             <i class="fa-solid fa-user text-lg mb-1"></i> أنا
         </button>
     </nav>
 
     <!-- JavaScript للمنطق -->
     <script>
-        // بيانات تجريبية للمتاجر إذا كانت فارغة
         let stores = JSON.parse(localStorage.getItem('platform_stores')) || [
-            { id: 1, name: 'حلويات أم أحمد', phone: '963900000000', products: [{id: 101, name: 'كنافة', price: 10, available: true}, {id: 102, name: 'بقلاوة', price: 8, available: true}], stats: {visitors: 25, orders: 4, revenue: 56} }
+            { 
+                id: 1, 
+                name: 'متجر أبو نصرة', 
+                phone: '963900000000', 
+                products: [
+                    {id: 101, name: 'منتج تجريبي 1', price: 5, available: true}, 
+                    {id: 102, name: 'منتج تجريبي 2', price: 12, available: true}
+                ], 
+                stats: {visitors: 0, orders: 0, revenue: 0} 
+            }
         ];
 
         let myStore = JSON.parse(localStorage.getItem('my_store_data')) || null;
@@ -165,17 +192,16 @@
         let activeStore = null;
         let cart = {};
 
-        // التنقل بين التبويبات
         function switchTab(tabName) {
             ['Home', 'Seller', 'Buyer', 'Profile'].forEach(t => {
                 document.getElementById('tab' + t).classList.add('hidden');
-                document.getElementById('nav-' + t.toLowerCase()).className = "flex flex-col items-center text-gray-400 text-xs font-bold";
+                document.getElementById('nav-' + t.toLowerCase()).className = "flex flex-col items-center text-slate-400 text-xs font-bold transition";
             });
 
             document.getElementById('storeProductsView').classList.add('hidden');
 
             document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.remove('hidden');
-            document.getElementById('nav-' + tabName).className = "flex flex-col items-center text-emerald-600 text-xs font-bold";
+            document.getElementById('nav-' + tabName).className = "flex flex-col items-center text-amber-400 text-xs font-bold transition";
 
             if (tabName === 'home') renderStoresList();
             if (tabName === 'seller') renderSellerView();
@@ -183,30 +209,32 @@
             if (tabName === 'profile') renderProfileStats();
         }
 
-        // عرض قائمة المتاجر في الرئيسية
         function renderStoresList() {
             const list = document.getElementById('storesList');
             if (stores.length === 0) {
-                list.innerHTML = '<p class="text-xs text-gray-400 text-center py-4">لا توجد متاجر مضافة حالياً.</p>';
+                list.innerHTML = '<p class="text-xs text-slate-500 text-center py-6">لا توجد متاجر مضافة حالياً.</p>';
                 return;
             }
             list.innerHTML = stores.map(s => `
-                <div onclick="openStore(${s.id})" class="bg-white p-4 rounded-xl shadow-sm border flex justify-between items-center cursor-pointer hover:border-emerald-500 transition">
-                    <div>
-                        <h3 class="font-bold text-gray-800">${s.name}</h3>
-                        <p class="text-xs text-gray-400">${s.products.length} منتجات متاحة</p>
+                <div onclick="openStore(${s.id})" class="bg-slate-800 hover:bg-slate-750 p-4 rounded-2xl border border-slate-700/80 shadow-lg flex justify-between items-center cursor-pointer transition transform active:scale-98">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-amber-400 font-bold shadow-inner">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-white text-base">${s.name}</h3>
+                            <p class="text-xs text-slate-400 mt-0.5">${s.products.length} منتجات متاحة</p>
+                        </div>
                     </div>
-                    <i class="fa-solid fa-chevron-left text-gray-300"></i>
+                    <i class="fa-solid fa-chevron-left text-slate-500 text-sm"></i>
                 </div>
             `).join('');
         }
 
-        // فتح متجر معين ورؤية منتجاته
         function openStore(storeId) {
             activeStore = stores.find(s => s.id === storeId);
             if (!activeStore) return;
 
-            // زيادة عدد الزوار افتراضياً
             activeStore.stats = activeStore.stats || {visitors: 0, orders: 0, revenue: 0};
             activeStore.stats.visitors++;
             savePlatformStores();
@@ -227,23 +255,23 @@
         function renderActiveStoreProducts() {
             const list = document.getElementById('storeItemsList');
             if (activeStore.products.length === 0) {
-                list.innerHTML = '<div class="bg-white p-6 rounded-xl text-center text-gray-400">هذا المتجر ليس لديه منتجات حالياً.</div>';
+                list.innerHTML = '<div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 text-center text-slate-400">عذراً، هذا المتجر لا يحتوي على منتجات حالياً.</div>';
                 return;
             }
             list.innerHTML = activeStore.products.map(p => `
-                <div class="bg-white p-3.5 rounded-xl shadow-sm border flex justify-between items-center">
+                <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 shadow-md flex justify-between items-center">
                     <div>
-                        <h3 class="font-bold text-gray-800">${p.name}</h3>
-                        <p class="text-emerald-600 font-bold text-sm">${p.price}$</p>
+                        <h3 class="font-black text-white text-base">${p.name}</h3>
+                        <p class="text-amber-400 font-bold text-sm mt-0.5">${p.price}$</p>
                     </div>
                     <div>
                         ${p.available ? `
-                            <div class="flex items-center gap-2">
-                                <button onclick="updateCart(${p.id}, -1)" class="w-7 h-7 bg-gray-100 rounded-lg font-bold text-gray-600">-</button>
-                                <span id="qty-${p.id}" class="font-bold text-sm w-4 text-center">${cart[p.id] || 0}</span>
-                                <button onclick="updateCart(${p.id}, 1)" class="w-7 h-7 bg-emerald-100 text-emerald-700 rounded-lg font-bold">+</button>
+                            <div class="flex items-center gap-3 bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-700">
+                                <button onclick="updateCart(${p.id}, -1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 rounded-lg font-black text-slate-300 flex items-center justify-center">-</button>
+                                <span id="qty-${p.id}" class="font-black text-sm w-4 text-center text-white">${cart[p.id] || 0}</span>
+                                <button onclick="updateCart(${p.id}, 1)" class="w-6 h-6 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg font-black flex items-center justify-center">+</button>
                             </div>
-                        ` : '<span class="text-xs text-red-500 bg-red-50 px-2 py-1 rounded">خلصت الكمية</span>'}
+                        ` : '<span class="text-xs text-rose-400 font-semibold bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-lg">نفذت الكمية</span>'}
                     </div>
                 </div>
             `).join('');
@@ -267,7 +295,6 @@
             document.getElementById('totalPrice').innerText = total + '$';
         }
 
-        // إرسال الطلب للواتساب وتسجيله في سجل المشتري
         function sendOrderToWhatsApp() {
             let orderItems = [];
             let total = 0;
@@ -283,29 +310,31 @@
             }
 
             if (orderItems.length === 0) {
-                alert('اختر منتجاً واحداً على الأقل.');
+                alert('الرجاء اختيار منتج واحد على الأقل.');
                 return;
             }
 
-            // تحديث إحصائيات المتجر
             activeStore.stats.orders++;
             activeStore.stats.revenue += total;
             savePlatformStores();
 
-            // حفظ الطلب في سجل المشتري
             buyerHistory.push({
+                id: Date.now(),
                 storeName: activeStore.name,
                 items: orderItems,
                 total: total,
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString(),
+                rating: null,
+                review: ''
             });
             localStorage.setItem('buyer_history', JSON.stringify(buyerHistory));
 
             let msg = `📋 *طلب جديد من متجر ${activeStore.name}:*\n\n` + orderItems.join('\n') + `\n\n💰 *المجموع:* ${total}$`;
             window.open(`https://wa.me/${activeStore.phone}?text=${encodeURIComponent(msg)}`, '_blank');
+            
+            switchTab('buyer');
         }
 
-        // لوحة البائع
         function renderSellerView() {
             if (!myStore) {
                 document.getElementById('sellerSetupCard').classList.remove('hidden');
@@ -344,7 +373,6 @@
             myStore.products.push({ id: Date.now(), name, price, available: true });
             localStorage.setItem('my_store_data', JSON.stringify(myStore));
             
-            // تحديثه في القائمة العامة أيضاً
             let idx = stores.findIndex(s => s.id === myStore.id);
             if (idx !== -1) stores[idx] = myStore;
             savePlatformStores();
@@ -357,13 +385,13 @@
         function renderMyProducts() {
             let list = document.getElementById('myProductsList');
             if (myStore.products.length === 0) {
-                list.innerHTML = '<p class="text-xs text-gray-400 text-center">لا توجد منتجات مضافة بعد.</p>';
+                list.innerHTML = '<p class="text-xs text-slate-500 text-center py-2">لا توجد منتجات مضافة بعد.</p>';
                 return;
             }
             list.innerHTML = myStore.products.map(p => `
-                <div class="flex justify-between items-center p-2 bg-gray-50 rounded border text-sm">
-                    <span>${p.name} - ${p.price}$</span>
-                    <button onclick="deleteMyProduct(${p.id})" class="text-xs text-red-500"><i class="fa-solid fa-trash"></i></button>
+                <div class="flex justify-between items-center p-3 bg-slate-900 border border-slate-700/80 rounded-xl text-sm">
+                    <span class="font-bold text-white">${p.name} <span class="text-amber-400 mr-2">${p.price}$</span></span>
+                    <button onclick="deleteMyProduct(${p.id})" class="text-xs text-rose-400 hover:text-rose-300 bg-rose-500/10 p-2 rounded-lg transition"><i class="fa-solid fa-trash"></i></button>
                 </div>
             `).join('');
         }
@@ -379,26 +407,52 @@
             localStorage.setItem('platform_stores', JSON.stringify(stores));
         }
 
-        // مشتري
         function renderBuyerOrders() {
             let list = document.getElementById('buyerOrdersList');
             if (buyerHistory.length === 0) {
-                list.innerHTML = '<div class="bg-white p-4 rounded-xl border text-center text-xs text-gray-400">لم تقم بإرسال أي طلبات بعد.</div>';
+                list.innerHTML = '<div class="bg-slate-800 p-8 rounded-2xl border border-slate-700 text-center text-xs text-slate-400">لم تقم بإرسال أي طلبات بعد.</div>';
                 return;
             }
             list.innerHTML = buyerHistory.map(o => `
-                <div class="bg-white p-3 rounded-xl border text-sm space-y-1">
-                    <div class="flex justify-between font-bold text-gray-800">
+                <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 shadow-lg text-sm space-y-2.5">
+                    <div class="flex justify-between font-black text-white">
                         <span>متجر: ${o.storeName}</span>
-                        <span class="text-emerald-600">${o.total}$</span>
+                        <span class="text-amber-400">${o.total}$</span>
                     </div>
-                    <p class="text-xs text-gray-500">${o.items.join(', ')}</p>
-                    <span class="text-[10px] text-gray-400 block text-left">${o.date}</span>
+                    <p class="text-xs text-slate-400 leading-relaxed">${o.items.join(', ')}</p>
+                    <div class="flex justify-between items-center pt-2 border-t border-slate-700 text-xs">
+                        <span class="text-slate-500">${o.date}</span>
+                        <div>
+                            ${o.rating ? `
+                                <span class="text-amber-400 font-bold">⭐ ${o.rating}/5</span>
+                                <span class="text-slate-400 mr-1">(${o.review || 'لا تعليق'})</span>
+                            ` : `
+                                <button onclick="openRatingModal(${o.id})" class="bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 px-3 py-1.5 rounded-xl font-bold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-star"></i> تقييم المتجر
+                                </button>
+                            `}
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
 
-        // أنا (الملف الشخصي)
+        function openRatingModal(orderId) {
+            let rating = prompt('قيّم تجربتك مع المتجر من 1 إلى 5:');
+            if (!rating || rating < 1 || rating > 5) return;
+            
+            let review = prompt('أضف ملاحظتك القصيرة عن التجربة (اختياري):') || '';
+
+            let order = buyerHistory.find(o => o.id === orderId);
+            if (order) {
+                order.rating = parseInt(rating);
+                order.review = review;
+                localStorage.setItem('buyer_history', JSON.stringify(buyerHistory));
+                renderBuyerOrders();
+                alert('شكراً لتقييمك!');
+            }
+        }
+
         function renderProfileStats() {
             let totalSpent = buyerHistory.reduce((sum, o) => sum + o.total, 0);
             let uniqueStores = [...new Set(buyerHistory.map(o => o.storeName))].length;
@@ -407,7 +461,6 @@
             document.getElementById('profileStoresCount').innerText = uniqueStores + ' متاجر';
         }
 
-        // التشغيل التلقائي عند فتح التطبيق
         renderStoresList();
     </script>
 </body>
