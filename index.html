@@ -1,874 +1,119 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>دكانك برو – متجرك على واتساب</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0f766e;
-      --primary-dark: #0d5f59;
-      --accent: #f59e0b;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --danger: #ef4444;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* Header */
-    .header {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 1.25rem 1.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .header-content {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .shop-name {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .header-sub {
-      font-size: 0.85rem;
-      opacity: 0.9;
-    }
-
-    .cart-btn {
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      padding: 0.6rem 1rem;
-      border-radius: 50px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: background 0.2s;
-    }
-
-    .cart-btn:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    .cart-count {
-      background: var(--accent);
-      color: #000;
-      font-size: 0.75rem;
-      font-weight: 700;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Main */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 8rem;
-    }
-
-    .section-title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: var(--text);
-    }
-
-    /* Categories */
-    .categories {
-      display: flex;
-      gap: 0.6rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      margin-bottom: 1.5rem;
-      scrollbar-width: none;
-    }
-
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat-btn {
-      background: white;
-      border: 1.5px solid var(--border);
-      padding: 0.5rem 1.1rem;
-      border-radius: 50px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-    }
-
-    .cat-btn.active,
-    .cat-btn:hover {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-    }
-
-    /* Products Grid */
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.25rem;
-    }
-
-    .product-card {
-      background: var(--card);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      transition: transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    .product-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background: #e2e8f0;
-    }
-
-    .product-body {
-      padding: 1rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-category {
-      font-size: 0.75rem;
-      color: var(--primary);
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .product-name {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.35rem;
-    }
-
-    .product-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-      flex: 1;
-    }
-
-    .product-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .product-price {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .qty-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: #f1f5f9;
-      border-radius: 50px;
-      padding: 0.25rem;
-    }
-
-    .qty-btn {
-      width: 32px;
-      height: 32px;
-      border: none;
-      border-radius: 50%;
-      background: var(--primary);
-      color: white;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-
-    .qty-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    .qty-btn:disabled {
-      background: #cbd5e1;
-      cursor: not-allowed;
-    }
-
-    .qty-value {
-      min-width: 28px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    /* Cart Sidebar */
-    .cart-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      z-index: 200;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.3s;
-    }
-
-    .cart-overlay.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .cart-panel {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      max-width: 420px;
-      height: 100%;
-      background: white;
-      z-index: 210;
-      transform: translateX(-100%);
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-    }
-
-    .cart-overlay.open .cart-panel {
-      transform: translateX(0);
-    }
-
-    .cart-header {
-      padding: 1.25rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .cart-header h2 {
-      font-size: 1.25rem;
-      font-weight: 700;
-    }
-
-    .close-cart {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: var(--muted);
-      line-height: 1;
-    }
-
-    .cart-items {
-      flex: 1;
-      overflow-y: auto;
-      padding: 1rem 1.5rem;
-    }
-
-    .cart-empty {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-    }
-
-    .cart-item {
-      display: flex;
-      gap: 1rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .cart-item-img {
-      width: 70px;
-      height: 70px;
-      border-radius: 10px;
-      object-fit: cover;
-      background: #e2e8f0;
-    }
-
-    .cart-item-info {
-      flex: 1;
-    }
-
-    .cart-item-name {
-      font-weight: 700;
-      font-size: 0.95rem;
-      margin-bottom: 0.2rem;
-    }
-
-    .cart-item-price {
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .cart-item-controls {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .cart-footer {
-      padding: 1.25rem 1.5rem;
-      border-top: 1px solid var(--border);
-      background: #f8fafc;
-    }
-
-    .cart-total {
-      display: flex;
-      justify-content: space-between;
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    .form-group {
-      margin-bottom: 0.9rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-      color: var(--text);
-    }
-
-    .form-group input,
-    .form-group textarea {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      transition: border-color 0.2s;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 70px;
-    }
-
-    .send-btn {
-      width: 100%;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 1rem;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .send-btn:hover {
-      background: #e08e0b;
-    }
-
-    .send-btn:active {
-      transform: scale(0.98);
-    }
-
-    .send-btn:disabled {
-      background: #cbd5e1;
-      cursor: not-allowed;
-    }
-
-    /* Floating cart bar (mobile) */
-    .floating-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: white;
-      padding: 1rem 1.25rem;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-      z-index: 50;
-      display: none;
-    }
-
-    .floating-bar.show {
-      display: block;
-    }
-
-    .floating-content {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .floating-total {
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .floating-btn {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 50px;
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-
-    /* Empty state */
-    .no-products {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: var(--muted);
-    }
-
-    /* Responsive */
-    @media (max-width: 600px) {
-      .products {
-        grid-template-columns: 1fr;
-      }
-      .product-img {
-        height: 200px;
-      }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>دكانك – متجرك على واتساب</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2a22;--paper:#faf8f2;--green:#1f4d36;--saffron:#e9a21a;--line:#e3dfd2;--mute:#6b746d;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--ink:#eef0ea;--paper:#141a16;--green:#3f9a69;--saffron:#f0b43a;--line:#2b352e;--mute:#9aa79e;--card:#1b231e}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;line-height:1.6;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:30px;font-weight:800;margin:8px 0 2px;color:var(--green)}
+h2{font-size:19px;margin:22px 0 8px}
+p.sub{margin:0 0 14px;color:var(--mute)}
+input,button{font:inherit}
+input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);margin-bottom:8px}
+input:focus,button:focus-visible{outline:2px solid var(--saffron);outline-offset:1px}
+.row{display:flex;gap:8px}.row>*{flex:1}.row>.sm{flex:0 0 76px}
+button{border:0;border-radius:10px;padding:11px 14px;cursor:pointer;font-weight:700;background:var(--green);color:#fff}
+button.alt{background:transparent;color:var(--green);border:1px solid var(--green)}
+button.gold{background:var(--saffron);color:#1d1a10}
+button.full{width:100%}
+.item{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.ic{width:52px;height:52px;border-radius:10px;background:var(--paper);display:grid;place-items:center;font-size:28px;overflow:hidden;flex:none}
+.ic img{width:100%;height:100%;object-fit:cover}
+.grow{flex:1;min-width:0}.name{font-weight:700}.price{color:var(--mute)}
+.qty{display:flex;align-items:center;gap:8px}.qty button{padding:4px 12px}
+.empty{color:var(--mute);padding:14px;border:1px dashed var(--line);border-radius:12px;text-align:center}
+.bar{position:sticky;bottom:0;background:var(--paper);padding:12px 0;border-top:1px solid var(--line)}
+.shop-head{background:var(--green);color:#fff;padding:22px 16px;border-radius:0 0 18px 18px}
+.shop-head h1{color:#fff;margin:0}
+.toast{position:fixed;bottom:84px;inset-inline:0;margin:auto;width:max-content;max-width:90%;background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:20px;display:none}
+.hide{display:none}
+</style>
 </head>
 <body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s), app=$('#app');
+const enc=o=>{const b=new TextEncoder().encode(JSON.stringify(o));let s='';b.forEach(c=>s+=String.fromCharCode(c));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+const dec=t=>{t=t.replace(/-/g,'+').replace(/_/g,'/');const s=atob(t),b=Uint8Array.from(s,c=>c.charCodeAt(0));return JSON.parse(new TextDecoder().decode(b))};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const isImg=s=>/^https?:\/\//.test(s);
+const icon=s=>isImg(s)?`<img src="${esc(s)}" alt="">`:esc(s||'🛍️');
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
 
-  <!-- Header -->
-  <header class="header">
-    <div class="header-content">
-      <div>
-        <div class="shop-name" id="shopName">دكانك</div>
-        <div class="header-sub">اختر طلبك وأرسله لنا على واتساب</div>
-      </div>
-      <button class="cart-btn" onclick="openCart()">
-        🛒 السلة
-        <span class="cart-count" id="cartCount">0</span>
-      </button>
-    </div>
-  </header>
+/* ---------- وضع الزبون ---------- */
+function customer(shop){
+  const cart={};
+  document.title=shop.n;
+  app.innerHTML=`<div class="shop-head"><h1>${esc(shop.n)}</h1><div>اختر طلبك وأرسله لنا على واتساب</div></div>
+  <div class="wrap"><div id="list"></div>
+  <h2>بياناتك</h2><input id="cn" placeholder="الاسم"><input id="ca" placeholder="العنوان أو ملاحظات التوصيل">
+  <div class="bar"><button class="gold full" id="send">أرسل الطلب عبر واتساب</button></div></div>`;
+  const list=$('#list');
+  const draw=()=>{list.innerHTML=shop.p.map((p,i)=>`<div class="item"><div class="ic">${icon(p[0])}</div>
+    <div class="grow"><div class="name">${esc(p[1])}</div><div class="price">${esc(p[2])} ${esc(shop.c)}</div></div>
+    <div class="qty"><button class="alt" data-m="${i}" aria-label="إنقاص">−</button><b>${cart[i]||0}</b><button data-a="${i}" aria-label="زيادة">+</button></div></div>`).join('')};
+  draw();
+  list.onclick=e=>{const a=e.target.dataset.a,m=e.target.dataset.m;
+    if(a!=null)cart[a]=(cart[a]||0)+1; if(m!=null&&cart[m])cart[m]--; draw()};
+  $('#send').onclick=()=>{
+    const lines=shop.p.map((p,i)=>cart[i]?`• ${p[1]} × ${cart[i]} = ${(+p[2]||0)*cart[i]} ${shop.c}`:null).filter(Boolean);
+    if(!lines.length)return toast('اختر منتجاً واحداً على الأقل');
+    const total=shop.p.reduce((s,p,i)=>s+(cart[i]||0)*(+p[2]||0),0);
+    const name=$('#cn').value.trim(),addr=$('#ca').value.trim();
+    const msg=`طلب جديد 🛒\n${lines.join('\n')}\nالمجموع: ${total} ${shop.c}\n${name?'الاسم: '+name+'\n':''}${addr?'العنوان: '+addr:''}`;
+    location.href=`https://wa.me/${shop.w}?text=${encodeURIComponent(msg)}`;
+  };
+}
 
-  <!-- Main Content -->
-  <main class="container">
-    <div class="categories" id="categories"></div>
-    <div class="products" id="products"></div>
-  </main>
+/* ---------- وضع التاجر ---------- */
+function merchant(){
+  let d={n:'',w:'',c:'$',p:[]};
+  try{const s=localStorage.getItem('dukkanak');if(s)d=JSON.parse(s)}catch(e){}
+  const save=()=>{try{localStorage.setItem('dukkanak',JSON.stringify(d))}catch(e){}};
+  app.innerHTML=`<div class="wrap"><h1>دكانك</h1><p class="sub">سوِّ متجرك وشاركه على واتساب في دقيقتين</p>
+  <h2>معلومات المتجر</h2>
+  <input id="n" placeholder="اسم المتجر، مثل: حلويات أم أحمد">
+  <div class="row"><input id="w" inputmode="numeric" placeholder="رقم واتساب مع رمز الدولة، مثل 962791234567"><input class="sm" id="c" placeholder="العملة"></div>
+  <h2>أضف منتجاً</h2>
+  <div class="row"><input class="sm" id="pi" placeholder="🍰"><input id="pn" placeholder="اسم المنتج"><input class="sm" id="pp" inputmode="decimal" placeholder="السعر"></div>
+  <input id="pu" placeholder="رابط صورة (اختياري، يبدأ بـ https)">
+  <button class="full" id="add">أضف المنتج</button>
+  <h2>منتجاتك</h2><div id="list"></div>
+  <div class="bar"><button class="gold full" id="gen">انسخ رابط متجرك</button>
+  <div class="row" style="margin-top:8px"><button class="alt" id="prev">معاينة المتجر</button></div></div></div>`;
+  $('#n').value=d.n;$('#w').value=d.w;$('#c').value=d.c;
+  const draw=()=>{$('#list').innerHTML=d.p.length?d.p.map((p,i)=>`<div class="item"><div class="ic">${icon(p[0])}</div>
+    <div class="grow"><div class="name">${esc(p[1])}</div><div class="price">${esc(p[2])} ${esc(d.c)}</div></div>
+    <button class="alt" data-d="${i}">حذف</button></div>`).join(''):'<div class="empty">لا توجد منتجات بعد. أضف أول منتج من الأعلى.</div>'};
+  draw();
+  const sync=()=>{d.n=$('#n').value.trim();d.w=$('#w').value.replace(/\D/g,'');d.c=$('#c').value.trim()||'$';save()};
+  ['#n','#w','#c'].forEach(s=>$(s).oninput=sync);
+  $('#add').onclick=()=>{sync();const nm=$('#pn').value.trim(),pr=$('#pp').value.trim();
+    if(!nm||!pr)return toast('اكتب اسم المنتج وسعره');
+    const u=$('#pu').value.trim();
+    d.p.push([isImg(u)?u:($('#pi').value.trim()||'🛍️'),nm,pr]);save();
+    ['#pi','#pn','#pp','#pu'].forEach(s=>$(s).value='');draw()};
+  $('#list').onclick=e=>{const x=e.target.dataset.d;if(x!=null){d.p.splice(x,1);save();draw()}};
+  const link=()=>{sync();if(!d.n||!d.w||!d.p.length){toast('أكمل الاسم والرقم وأضف منتجاً');return null}
+    return location.origin+location.pathname+'#'+enc(d)};
+  $('#gen').onclick=async()=>{const l=link();if(!l)return;
+    try{await navigator.clipboard.writeText(l);toast('تم نسخ الرابط، شاركه مع زبائنك')}catch(e){prompt('انسخ الرابط:',l)}};
+  $('#prev').onclick=()=>{const l=link();if(l)window.open(l,'_blank')};
+}
 
-  <!-- Floating Bar -->
-  <div class="floating-bar" id="floatingBar">
-    <div class="floating-content">
-      <div class="floating-total">
-        الإجمالي: <span id="floatingTotal">0</span> <span id="currencyLabel">ل.س</span>
-      </div>
-      <button class="floating-btn" onclick="openCart()">عرض السلة</button>
-    </div>
-  </div>
-
-  <!-- Cart Sidebar -->
-  <div class="cart-overlay" id="cartOverlay" onclick="closeCart(event)">
-    <div class="cart-panel" onclick="event.stopPropagation()">
-      <div class="cart-header">
-        <h2>🛒 سلة الطلبات</h2>
-        <button class="close-cart" onclick="closeCart()">×</button>
-      </div>
-
-      <div class="cart-items" id="cartItems">
-        <div class="cart-empty">السلة فارغة حالياً</div>
-      </div>
-
-      <div class="cart-footer">
-        <div class="cart-total">
-          <span>الإجمالي</span>
-          <span><span id="cartTotal">0</span> <span id="currencyLabel2">ل.س</span></span>
-        </div>
-
-        <div class="form-group">
-          <label>الاسم *</label>
-          <input type="text" id="customerName" placeholder="اسمك الكريم" required />
-        </div>
-        <div class="form-group">
-          <label>العنوان أو ملاحظات التوصيل</label>
-          <textarea id="customerNotes" placeholder="العنوان بالتفصيل أو أي ملاحظات..."></textarea>
-        </div>
-
-        <button class="send-btn" id="sendBtn" onclick="sendOrder()" disabled>
-          أرسل الطلب عبر واتساب
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ============================================
-    // 🔧 إعدادات المتجر - عدّل هنا فقط
-    // ============================================
-    const SHOP_CONFIG = {
-      name: "ناصر للحلويات",
-      whatsapp: "963930251539",          // بدون + أو 00
-      currency: "ل.س",
-      currencyFull: "ليرة سوري",
-      
-      // المنتجات
-      products: [
-        {
-          id: 1,
-          name: "كيك شوكولا",
-          category: "حلويات",
-          price: 500,
-          description: "كيك شوكولا طازج بحجم عائلي",
-          image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop"
-        },
-        {
-          id: 2,
-          name: "كيك فانيلا",
-          category: "حلويات",
-          price: 450,
-          description: "كيك فانيلا خفيف ولذيذ",
-          image: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=400&h=300&fit=crop"
-        },
-        {
-          id: 3,
-          name: "بقلاوة مشكلة",
-          category: "حلويات",
-          price: 800,
-          description: "بقلاوة بالفستق والجوز - كيلو",
-          image: "https://images.unsplash.com/photo-1599599810694-b5ac4dd21054?w=400&h=300&fit=crop"
-        },
-        {
-          id: 4,
-          name: "كنافة نابلسية",
-          category: "حلويات",
-          price: 600,
-          description: "كنافة بالجبنة الطازجة",
-          image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=400&h=300&fit=crop"
-        },
-        {
-          id: 5,
-          name: "عصير برتقال طازج",
-          category: "مشروبات",
-          price: 150,
-          description: "عصير برتقال طبيعي 100%",
-          image: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&h=300&fit=crop"
-        },
-        {
-          id: 6,
-          name: "قهوة تركية",
-          category: "مشروبات",
-          price: 100,
-          description: "قهوة تركية أصيلة مع هيل",
-          image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400&h=300&fit=crop"
-        },
-        {
-          id: 7,
-          name: "ساندويش شاورما",
-          category: "مأكولات",
-          price: 350,
-          description: "شاورما دجاج مع ثوم ومخلل",
-          image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&h=300&fit=crop"
-        },
-        {
-          id: 8,
-          name: "فتة حمص",
-          category: "مأكولات",
-          price: 400,
-          description: "فتة حمص بالطحينة واللوز",
-          image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop"
-        }
-      ]
-    };
-
-    // ============================================
-    //  منطق التطبيق
-    // ============================================
-    let cart = {}; // { productId: quantity }
-    let currentCategory = "الكل";
-
-    // تهيئة
-    document.getElementById("shopName").textContent = SHOP_CONFIG.name;
-    document.getElementById("currencyLabel").textContent = SHOP_CONFIG.currency;
-    document.getElementById("currencyLabel2").textContent = SHOP_CONFIG.currency;
-
-    // استخراج الفئات
-    function getCategories() {
-      const cats = ["الكل", ...new Set(SHOP_CONFIG.products.map(p => p.category))];
-      return cats;
-    }
-
-    // رسم الفئات
-    function renderCategories() {
-      const cats = getCategories();
-      const container = document.getElementById("categories");
-      container.innerHTML = cats.map(cat => `
-        <button class="cat-btn ${cat === currentCategory ? 'active' : ''}" 
-                onclick="filterCategory('${cat}')">
-          ${cat}
-        </button>
-      `).join("");
-    }
-
-    // تصفية حسب الفئة
-    function filterCategory(cat) {
-      currentCategory = cat;
-      renderCategories();
-      renderProducts();
-    }
-
-    // رسم المنتجات
-    function renderProducts() {
-      const container = document.getElementById("products");
-      let products = SHOP_CONFIG.products;
-
-      if (currentCategory !== "الكل") {
-        products = products.filter(p => p.category === currentCategory);
-      }
-
-      if (products.length === 0) {
-        container.innerHTML = `<div class="no-products">لا توجد منتجات في هذه الفئة</div>`;
-        return;
-      }
-
-      container.innerHTML = products.map(p => {
-        const qty = cart[p.id] || 0;
-        return `
-          <div class="product-card">
-            <img class="product-img" src="\( {p.image}" alt=" \){p.name}" 
-                 onerror="this.src='https://via.placeholder.com/400x300?text=صورة+غير+متوفرة'" />
-            <div class="product-body">
-              <div class="product-category">${p.category}</div>
-              <div class="product-name">${p.name}</div>
-              <div class="product-desc">${p.description || ''}</div>
-              <div class="product-footer">
-                <div class="product-price">${p.price} ${SHOP_CONFIG.currency}</div>
-                <div class="qty-controls">
-                  <button class="qty-btn" onclick="changeQty(${p.id}, -1)" ${qty === 0 ? 'disabled' : ''}>−</button>
-                  <span class="qty-value">${qty}</span>
-                  <button class="qty-btn" onclick="changeQty(${p.id}, 1)">+</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    // تغيير الكمية
-    function changeQty(id, delta) {
-      const current = cart[id] || 0;
-      const newQty = Math.max(0, current + delta);
-      
-      if (newQty === 0) {
-        delete cart[id];
-      } else {
-        cart[id] = newQty;
-      }
-      
-      updateUI();
-    }
-
-    // تحديث الواجهة
-    function updateUI() {
-      renderProducts();
-      renderCart();
-      updateCartCount();
-      updateFloatingBar();
-    }
-
-    // عدد العناصر في السلة
-    function updateCartCount() {
-      const total = Object.values(cart).reduce((sum, q) => sum + q, 0);
-      document.getElementById("cartCount").textContent = total;
-    }
-
-    // الشريط العائم
-    function updateFloatingBar() {
-      const totalItems = Object.values(cart).reduce((sum, q) => sum + q, 0);
-      const bar = document.getElementById("floatingBar");
-      
-      if (totalItems > 0) {
-        bar.classList.add("show");
-        document.getElementById("floatingTotal").textContent = calculateTotal();
-      } else {
-        bar.classList.remove("show");
-      }
-    }
-
-    // حساب الإجمالي
-    function calculateTotal() {
-      let total = 0;
-      for (const [id, qty] of Object.entries(cart)) {
-        const product = SHOP_CONFIG.products.find(p => p.id === Number(id));
-        if (product) total += product.price * qty;
-      }
-      return total;
-    }
-
-    // رسم السلة
-    function renderCart() {
-      const container = document.getElementById("cartItems");
-      const items = Object.entries(cart);
-      
-      if (items.length === 0) {
-        container.innerHTML = `<div class="cart-empty">السلة فارغة حالياً<br><small>أضف منتجات للمتابعة</small></div>`;
-        document.getElementById("sendBtn").disabled = true;
-        document.getElementById("cartTotal").textContent = "0";
-        return;
-      }
-
-      container.innerHTML = items.map(([id, qty]) => {
-        const p = SHOP_CONFIG.products.find(prod => prod.id === Number(id));
-        if (!p) return "";
-        return `
-          <div class="cart-item">
-            <img class="cart-item-img" src="\( {p.image}" alt=" \){p.name}"
-                 onerror="this.src='https://via.placeholder.com/70'" />
-            <div class="cart-item-info">
-              <div class="cart-item-name">${p.name}</div>
-              <div class="cart-item-price">${p.price} ${SHOP_CONFIG.currency} × ${qty}</div>
-              <div class="cart-item-controls">
-                <button class="qty-btn" style="width:28px;height:28px;font-size:1rem" 
-                        onclick="changeQty(${p.id}, -1)">−</button>
-                <span class="qty-value">${qty}</span>
-                <button class="qty-btn" style="width:28px;height:28px;font-size:1rem" 
-                        onclick="changeQty(${p.id}, 1)">+</button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      document.getElementById("cartTotal").textContent = calculateTotal();
-      document.getElementById("sendBtn").disabled = false;
-    }
-
-    // فتح / إغلاق السلة
-    function openCart() {
-      document.getElementById("cartOverlay").classList.add("open");
-      document.body.style.overflow = "hidden";
-    }
-
-    function closeCart(e) {
-      if (e && e.target !== e.currentTarget && !e.target.classList.contains("close-cart")) return;
-      document.getElementById("cartOverlay").classList.remove("open");
-      document.body.style.overflow = "";
-    }
-
-    // إرسال الطلب
-    function sendOrder() {
-      const name = document.getElementById("customerName").value.trim();
-      const notes = document.getElementById("customerNotes").value.trim();
-
-      if (!name) {
-        alert("الرجاء إدخال الاسم");
-        document.getElementById("customerName").focus();
-        return;
-      }
-
-      const items = Object.entries(cart);
-      if (items.length === 0) {
-        alert("السلة فارغة");
-        return;
-      }
-
-      let message = `🛒 *طلب جديد من ${SHOP_CONFIG.name}*\n\n`;
-      message += `👤 *الاسم:* ${name}\n`;
-      if (notes) message += `📍 *العنوان/ملاحظات:* ${notes}\n`;
-      message += `\n━━━━━━━━━━━━━━━\n*تفاصيل الطلب:*\n`;
-
-      let total = 0;
-      items.forEach(([id, qty]) => {
-        const p = SHOP_CONFIG.products.find(prod => prod.id === Number(id));
-        if (p) {
-          const lineTotal = p.price * qty;
-          total += lineTotal;
-          message += `\n• ${p.name}\n  الكمية: ${qty} × ${p.price} = ${lineTotal} ${SHOP_CONFIG.currency}`;
-        }
-      });
-
-      message += `\n\n━━━━━━━━━━━━━━━\n💰 *الإجمالي: ${total} ${SHOP_CONFIG.currency}*`;
-      message += `\n\n_تم الطلب عبر دكانك برو_`;
-
-      const encoded = encodeURIComponent(message);
-      const url = `https://wa.me/\( {SHOP_CONFIG.whatsapp}?text= \){encoded}`;
-      
-      window.open(url, "_blank");
-    }
-
-    // بدء التطبيق
-    renderCategories();
-    renderProducts();
-    updateCartCount();
-  </script>
+function route(){
+  const h=location.hash.slice(1);
+  if(h){try{return customer(dec(h))}catch(e){}}
+  merchant();
+}
+addEventListener('hashchange',route);route();
+</script>
 </body>
 </html>
