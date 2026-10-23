@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B1F1C">
+<title>دكانك — سوقك في مكان واحد</title>
+<style>
+:root{--bg:#0d1117;--card:#161b26;--bd:#232b3b;--tx:#f2f2f2;--mu:#8b93a7;--g:#d4ad4f}
+body.light{--bg:#f6f4ee;--card:#fff;--bd:#e3dfd2;--tx:#1b1b1b;--mu:#6b6b6b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Segoe UI",Tahoma,sans-serif;padding:0 16px 96px}
+h2,h3{margin:.4em 0}
+.h{display:flex;align-items:center;gap:10px;padding:16px 0 8px}
+.h h2{flex:1;font-size:1.5rem}
+.logo{background:var(--g);border-radius:14px;width:44px;height:44px;display:grid;place-items:center;font-size:1.4rem}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;margin:10px 0}
+.m{color:var(--mu);font-size:.9rem;margin:.3em 0}
+input,select,textarea{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:14px;padding:13px;margin:6px 0;font:inherit}
+.b{display:block;width:100%;background:var(--g);color:#1a1405;border:0;border-radius:14px;padding:13px;margin:8px 0;font:inherit;font-weight:700;cursor:pointer}
+.b.o{background:none;color:var(--g);border:1.5px solid var(--g)}
+.i{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:12px;width:42px;height:42px;font-size:1.1rem}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g .c{margin:0}
+.g img,.pi{width:100%;height:110px;object-fit:cover;border-radius:12px;margin-bottom:6px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.st .c{text-align:center;margin:0}.st b{font-size:1.4rem;display:block}
+.cb{position:fixed;inset:auto 16px 78px;background:var(--card);border:1.5px solid var(--g);border-radius:18px;padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:5}
+.cb .b{margin:0;width:auto;padding:10px 16px}
+nav{position:fixed;inset:auto 0 0;background:var(--card);border-top:1px solid var(--bd);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:6}
+nav button{flex:1;background:none;border:0;color:var(--mu);font:inherit;font-size:.78rem;display:grid;gap:2px;padding:6px 0}
+nav button span{font-size:1.4rem}nav button.on{color:var(--g)}
+.tag{background:var(--bg);border-radius:10px;padding:3px 9px;font-size:.8rem;color:var(--g)}
+</style>
+</head>
+<body>
+<script>
+function dkErr(m){var d=document.createElement('div');d.style.cssText='position:fixed;top:0;left:0;right:0;background:#b00020;color:#fff;padding:8px;z-index:99;font:12px monospace;direction:ltr;word-break:break-all';d.textContent='ERR: '+m;(document.body||document.documentElement).appendChild(d)}
+addEventListener('error',function(e){dkErr(e.message)});
+addEventListener('unhandledrejection',function(e){dkErr(e.reason&&e.reason.message||e.reason)});
+</script>
+<div id="app"></div>
+<nav id="nav"></nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>window.supabase||document.write('<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"><\/script>')</script>
+<script>if(!window.supabase)dkErr('تعذّر تحميل مكتبة Supabase: تأكد من الإنترنت أو أوقف الـ VPN')</script>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(r=>r.forEach(x=>x.unregister()));if(window.caches)caches.keys().then(k=>k.forEach(c=>caches.delete(c)))}
+const SB_URL='https://ojazsslcfwiwvjsbohyc.supabase.co';
+const SB_KEY='sb_publishable_MWPL0ekEy-2LuRVIbgvMUQ_94K3i6qf'; // المفتاح العام sb_publishable_...
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const $=s=>document.querySelector(s);
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ST={new:'جديد',prep:'قيد التجهيز',done:'تم التوصيل',cancel:'ملغي'};
+let S={tab:'home',user:null,store:null,cart:[],cartStore:null,prods:{},stores:{},favs:JSON.parse(localStorage.dkf||'[]')};
+if(localStorage.dkl==='1')document.body.classList.add('light');
+
+const TABS=[['home','🏠','الرئيسية'],['buy','🛒','مشتري'],['sell','🏪','بائع'],['fav','❤️','المفضلة'],['more','☰','المزيد']];
+function go(t){S.tab=t;render();scrollTo(0,0)}
+async function render(){
+  $('#nav').innerHTML=TABS.map(([k,i,n])=>`<button class="${S.tab===k||(S.tab==='store'&&k==='home')?'on':''}" onclick="go('${k}')"><span>${i}</span>${n}</button>`).join('');
+  const a=$('#app');
+  try{await ({home,buy,sell,fav,more,store:storeView}[S.tab])(a)}catch(e){a.innerHTML=`<div class=c>تعذّر التحميل: ${E(e.message)}</div>`}
+}
+const hd=t=>`<div class=h><div class=logo>🛍️</div><h2>${t}</h2></div>`;
+
+/* ---------- الحساب ---------- */
+function loginForm(t){return `<div class=c><h3>${t}</h3>
+<input id=n placeholder="اسمك (للحساب الجديد فقط)"><input id=em type=email placeholder="البريد الإلكتروني"><input id=pw type=password placeholder="كلمة المرور (6 أحرف على الأقل)">
+<button class=b onclick="auth(0)">دخول</button><button class="b o" onclick="auth(1)">إنشاء حساب جديد</button></div>`}
+async function auth(up){
+  const email=$('#em').value.trim(),password=$('#pw').value;
+  const r=up?await sb.auth.signUp({email,password,options:{data:{name:$('#n').value.trim()}}}):await sb.auth.signInWithPassword({email,password});
+  if(r.error)alert(r.error.message);
+}
+sb.auth.onAuthStateChange((ev,s)=>{const id=s?.user?.id||null,was=S.user?.id||null;S.user=s?.user||null;if(ev==='INITIAL_SESSION'||id!==was)render()});
+
+/* ---------- الرئيسية ---------- */
+let Q='';
+async function home(a){
+  const {data,error}=await sb.from('dk_stores').select('*').order('created_at',{ascending:false});
+  if(error)throw error;
+  (data||[]).forEach(s=>S.stores[s.id]=s);
+  a.innerHTML=hd('دكانك')+`<input id=q placeholder="ابحث عن متجر أو مدينة أو قسم..." value="${E(Q)}" oninput="Q=this.value;filterStores()"><div id=l></div><p class=m style="text-align:center">النسخة 2</p>`;
+  filterStores();
+}
+function card(s){return `<div class=c onclick="open_('${s.id}')"><div class=row><b>${E(s.name)}</b><span>${S.favs.includes(s.id)?'❤️':''}</span></div>
+<div class=m>${E(s.descr||'')}</div><span class=tag>${E(s.city||'')}</span> <span class=tag>${E(s.category||'')}</span></div>`}
+function filterStores(){
+  const q=Q.trim().toLowerCase();
+  const r=Object.values(S.stores).filter(s=>!q||[s.name,s.city,s.category].join(' ').toLowerCase().includes(q));
+  $('#l').innerHTML=r.map(card).join('')||'<div class=c>لا توجد متاجر بعد. كن أول من يفتح متجرًا من تبويب «بائع».</div>';
+}
+function open_(id){S.store=S.stores[id];S.tab='store';render();scrollTo(0,0)}
+
+/* ---------- صفحة المتجر والسلة ---------- */
+function cartInfo(){return {n:S.cart.reduce((n,i)=>n+i.q,0),sum:S.cart.reduce((n,i)=>n+i.q*i.price,0)}}
+async function storeView(a){
+  const s=S.store;
+  const {data:p}=await sb.from('dk_products').select('*').eq('store_id',s.id).eq('available',true).order('created_at');
+  (p||[]).forEach(x=>S.prods[x.id]=x);
+  const {n,sum}=S.cartStore===s.id?cartInfo():{n:0,sum:0};
+  a.innerHTML=`<div class=h><button class=i onclick="go('home')">→</button><h2>${E(s.name)}</h2><button class=i onclick="fav('${s.id}')">${S.favs.includes(s.id)?'❤️':'🤍'}</button></div>
+<p class=m>${E(s.descr||'')}</p><p class=m>📍 ${E(s.city||'')} — ${E(s.category||'')} — 🕒 ${E(s.hours||'غير محدد')}</p>
+<p class=m>التوصيل: ${s.delivery} ${E(s.currency)} — أقل طلب: ${s.min_order} ${E(s.currency)}</p>
+<button class="b o" onclick="share('${E(s.slug)}')">🔗 شارك رابط المتجر</button>
+<div class=g>${(p||[]).map(x=>`<div class=c>${x.image?`<img src="${E(x.image)}" alt="">`:''}<b>${E(x.name)}</b><div class=m>${x.price} ${E(s.currency)}</div><button class=b onclick="add('${x.id}')">أضف للسلة</button></div>`).join('')||'<div class=c>لا توجد منتجات بعد.</div>'}</div>
+${n?`<div class=cb><span style="flex:1">${n} منتج — ${sum} ${E(s.currency)}</span><button class=b onclick="checkout()">إتمام الطلب</button></div>`:''}`;
+}
+function add(id){
+  const p=S.prods[id];if(S.cartStore!==S.store.id){S.cart=[];S.cartStore=S.store.id}
+  const i=S.cart.find(x=>x.id===id);i?i.q++:S.cart.push({id,name:p.name,price:+p.price,q:1});render();
+}
+function shareUrl(slug){return location.origin+location.pathname+'?s='+encodeURIComponent(slug)}
+async function share(slug){
+  const url=shareUrl(slug);
+  if(navigator.share){try{return await navigator.share({title:'متجري على دكانك',url})}catch(e){return}}
+  try{await navigator.clipboard.writeText(url);alert('تم نسخ الرابط:\n'+url)}catch(e){prompt('انسخ الرابط:',url)}
+}
+function checkout(){
+  const s=S.store,{sum}=cartInfo();
+  $('#app').innerHTML=hd('إتمام الطلب')+`<div class=c>
+${S.cart.map(i=>`<div class=row><span>${E(i.name)} × ${i.q}</span><span>${i.q*i.price} ${E(s.currency)}</span></div>`).join('')}
+<hr style="border-color:var(--bd)"><div class=row><span>التوصيل</span><span>${s.delivery} ${E(s.currency)}</span></div>
+<div class=row><b>المجموع</b><b>${sum+ +s.delivery} ${E(s.currency)}</b></div></div>
+<div class=c><input id=bn placeholder="اسمك" value="${E(S.user?.user_metadata?.name||'')}"><input id=bp type=tel placeholder="رقم هاتفك"><textarea id=ba rows=2 placeholder="العنوان"></textarea>
+<button class=b onclick="send()">أرسل الطلب عبر واتساب</button><button class="b o" onclick="render()">رجوع</button></div>`;
+}
+async function send(){
+  const s=S.store,{sum}=cartInfo(),total=sum+ +s.delivery;
+  if(sum<+s.min_order)return alert('أقل قيمة للطلب هي '+s.min_order+' '+s.currency);
+  const nm=$('#bn').value.trim(),ph=$('#bp').value.trim(),ad=$('#ba').value.trim();
+  if(!nm||!ph)return alert('الاسم ورقم الهاتف مطلوبان');
+  const items=S.cart.map(i=>({name:i.name,price:i.price,q:i.q}));
+  const {error}=await sb.from('dk_orders').insert({store_id:s.id,buyer_name:nm,buyer_phone:ph,address:ad,items,total});
+  if(error)return alert('تعذّر إرسال الطلب: '+error.message);
+  const txt=`طلب جديد من دكانك\n${items.map(i=>`- ${i.name} × ${i.q}`).join('\n')}\nالمجموع: ${total} ${s.currency}\nالاسم: ${nm}\nالهاتف: ${ph}\nالعنوان: ${ad}`;
+  S.cart=[];S.cartStore=null;
+  location.href=`https://wa.me/${s.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(txt)}`;
+}
+
+/* ---------- المشتري ---------- */
+async function buy(a){
+  if(!S.user)return a.innerHTML=hd('مشترٍ')+loginForm('سجّل دخولك لتتابع طلباتك');
+  const {data:o}=await sb.from('dk_orders').select('*,dk_stores(name,currency)').eq('buyer',S.user.id).order('created_at',{ascending:false});
+  const sum=(o||[]).filter(x=>x.status!=='cancel').reduce((n,x)=>n+ +x.total,0);
+  a.innerHTML=hd('طلباتي')+`<div class=st><div class=c><b>${(o||[]).length}</b>طلب</div><div class=c><b>${sum}</b>أنفقت</div></div>`+
+  ((o||[]).map(x=>`<div class=c><div class=row><b>${E(x.dk_stores?.name)}</b><span class=tag>${ST[x.status]||x.status}</span></div>
+<div class=m>${(x.items||[]).map(i=>E(i.name)+' ×'+i.q).join('، ')}</div><div class=m>${x.total} ${E(x.dk_stores?.currency)} — ${new Date(x.created_at).toLocaleDateString('ar')}</div></div>`).join('')||'<div class=c>لم تطلب شيئًا بعد. تصفح المتاجر من الرئيسية.</div>');
+}
+
+/* ---------- البائع ---------- */
+async function sell(a){
+  if(!S.user)return a.innerHTML=hd('بائع')+loginForm('سجّل دخولك لتفتح متجرك');
+  const {data:st}=await sb.from('dk_stores').select('*').eq('owner',S.user.id).maybeSingle();
+  if(!st)return a.innerHTML=hd('افتح متجرك')+`<div class=c>
+<input id=f1 placeholder="اسم المتجر"><input id=f2 placeholder="وصف قصير"><input id=f3 type=tel placeholder="رقم واتساب مع رمز الدولة، مثل 963991234567">
+<input id=f4 placeholder="المدينة"><input id=f5 placeholder="القسم (حلويات، ملابس...)">
+<select id=f6><option>$</option><option>ل.س</option><option>د.أ</option><option>ر.س</option></select>
+<input id=f7 type=number placeholder="رسوم التوصيل (0 إن لم يوجد)"><input id=f8 type=number placeholder="أقل قيمة للطلب (0 إن لم يوجد)"><input id=f9 placeholder="ساعات العمل، مثل 10 ص - 10 م">
+<button class=b onclick="mkStore()">إنشاء المتجر</button></div>`;
+  const [{data:p},{data:o}]=await Promise.all([
+    sb.from('dk_products').select('*').eq('store_id',st.id).order('created_at',{ascending:false}),
+    sb.from('dk_orders').select('*').eq('store_id',st.id).order('created_at',{ascending:false})]);
+  const inc=(o||[]).filter(x=>x.status==='done').reduce((n,x)=>n+ +x.total,0);
+  a.innerHTML=hd(E(st.name))+`<div class=st><div class=c><b>${(o||[]).length}</b>طلب</div><div class=c><b>${inc}</b>الدخل</div><div class=c><b>${(p||[]).length}</b>منتج</div></div>
+<div class=c><div class=m>رابط متجرك للمشاركة على إنستغرام وغيره:</div><div class=m style="direction:ltr;word-break:break-all">${E(shareUrl(st.slug))}</div>
+<button class=b onclick="share('${E(st.slug)}')">🔗 شارك الرابط</button></div>
+<div class=c><h3>أضف منتجًا</h3><input id=pn placeholder="اسم المنتج"><input id=pp type=number placeholder="السعر"><input id=pf type=file accept="image/*">
+<button class=b onclick="addProd('${st.id}')">حفظ المنتج</button></div>
+<h3>منتجاتي</h3>${(p||[]).map(x=>`<div class="c row">${x.image?`<img class=pi style="width:56px;height:56px;margin:0" src="${E(x.image)}">`:''}<span style="flex:1">${E(x.name)}<div class=m>${x.price} ${E(st.currency)}</div></span><button class="i" onclick="delProd('${x.id}')">🗑️</button></div>`).join('')||'<div class=c>لا منتجات بعد.</div>'}
+<h3>الطلبات</h3>${(o||[]).map(x=>`<div class=c><div class=row><b>${E(x.buyer_name)}</b><span>${x.total} ${E(st.currency)}</span></div>
+<div class=m>${(x.items||[]).map(i=>E(i.name)+' ×'+i.q).join('، ')}</div><div class=m>📞 ${E(x.buyer_phone)} — ${E(x.address||'')}</div>
+<select onchange="setSt('${x.id}',this.value)">${Object.entries(ST).map(([k,v])=>`<option value="${k}" ${x.status===k?'selected':''}>${v}</option>`).join('')}</select></div>`).join('')||'<div class=c>لا طلبات بعد.</div>'}
+<h3>منطقة الخطر</h3><div class=c><div class=m>حذف المتجر يمسح منتجاته وطلباته نهائيًا، وبعدها تقدر تفتح متجرًا جديدًا.</div>
+<button class=b style="background:#b3261e;color:#fff" onclick="delStore('${st.id}')">🗑️ حذف المتجر</button></div>`;
+}
+async function delStore(id){
+  if(!confirm('سيتم حذف المتجر وكل منتجاته وطلباته نهائيًا. هل أنت متأكد؟'))return;
+  await sb.from('dk_products').delete().eq('store_id',id);
+  await sb.from('dk_orders').delete().eq('store_id',id);
+  const {data,error}=await sb.from('dk_stores').delete().eq('id',id).select();
+  if(error)return alert('تعذّر الحذف: '+error.message);
+  if(!data||!data.length)return alert('لم يُحذف المتجر. شغّل ملف delete_policies.sql في Supabase أولًا.');
+  delete S.stores[id];
+  if(S.store&&S.store.id===id)S.store=null;
+  render();
+}
+async function mkStore(){
+  const v=i=>$('#f'+i).value.trim(),name=v(1);
+  if(!name||!v(3))return alert('اسم المتجر ورقم واتساب مطلوبان');
+  const slug=(name.replace(/\s+/g,'-').replace(/[^\p{L}\p{N}-]/gu,'')||'متجر')+'-'+(100+Math.floor(Math.random()*900));
+  const {error}=await sb.from('dk_stores').insert({slug,name,descr:v(2),whatsapp:v(3),city:v(4),category:v(5),currency:v(6),delivery:+v(7)||0,min_order:+v(8)||0,hours:v(9)});
+  if(error)return alert(error.message);
+  render();
+}
+async function addProd(sid){
+  const name=$('#pn').value.trim(),price=+$('#pp').value,f=$('#pf').files[0];
+  if(!name||!(price>=0)||$('#pp').value==='')return alert('اسم المنتج والسعر مطلوبان');
+  let image=null;
+  if(f){
+    if(f.size>3e6)return alert('الصورة كبيرة، اختر صورة أقل من 3 ميغابايت');
+    const path=`${S.user.id}/${Date.now()}`;
+    const u=await sb.storage.from('dk-images').upload(path,f,{contentType:f.type});
+    if(u.error)return alert('تعذّر رفع الصورة: '+u.error.message);
+    image=sb.storage.from('dk-images').getPublicUrl(path).data.publicUrl;
+  }
+  const {error}=await sb.from('dk_products').insert({store_id:sid,name,price,image});
+  if(error)return alert(error.message);
+  render();
+}
+async function delProd(id){if(confirm('حذف المنتج؟')){await sb.from('dk_products').delete().eq('id',id);render()}}
+async function setSt(id,status){const {error}=await sb.from('dk_orders').update({status}).eq('id',id);if(error)alert(error.message)}
+
+/* ---------- المفضلة ---------- */
+async function fav(a){
+  if(typeof a==='string')return favToggle(a);
+  const {data}=await sb.from('dk_stores').select('*').in('id',S.favs.length?S.favs:['00000000-0000-0000-0000-000000000000']);
+  (data||[]).forEach(s=>S.stores[s.id]=s);
+  a.innerHTML=hd('المفضلة')+((data||[]).map(card).join('')||'<div class=c>لم تضف متجرًا للمفضلة بعد. اضغط 🤍 داخل أي متجر.</div>');
+}
+function favToggle(id){S.favs=S.favs.includes(id)?S.favs.filter(x=>x!==id):[...S.favs,id];localStorage.dkf=JSON.stringify(S.favs);render()}
+
+/* ---------- المزيد ---------- */
+async function more(a){
+  a.innerHTML=hd('المزيد')+(S.user?`<div class=c><b>${E(S.user.user_metadata?.name||'')}</b><div class=m>${E(S.user.email)}</div></div>`:'')+
+`<button class="b o" onclick="theme()">🌓 تبديل الوضع الليلي والنهاري</button>
+<div class=c><h3>مساعدة وشكوى</h3><div class=m>اكتب مشكلتك أو اقتراحك وسنقرؤه.</div><textarea id=cm rows=3 placeholder="رسالتك"></textarea><button class=b onclick="complain()">إرسال</button></div>
+${S.user?'<button class="b o" onclick="sb.auth.signOut()">تسجيل الخروج</button>':''}`;
+}
+function theme(){document.body.classList.toggle('light');localStorage.dkl=document.body.classList.contains('light')?'1':'0'}
+async function complain(){
+  if(!S.user)return alert('سجّل دخولك أولًا من تبويب مشتري أو بائع');
+  const msg=$('#cm').value.trim();if(!msg)return;
+  const {error}=await sb.from('dk_complaints').insert({msg});
+  alert(error?error.message:'وصلتنا رسالتك، شكرًا لك');if(!error)$('#cm').value='';
+}
+
+/* ---------- فتح رابط متجر مباشرة ---------- */
+(async()=>{
+  const slug=new URLSearchParams(location.search).get('s');
+  if(slug){const {data}=await sb.from('dk_stores').select('*').eq('slug',slug).maybeSingle();if(data){S.stores[data.id]=data;S.store=data;S.tab='store'}}
+  render();
+})();
+</script>
+</body>
+</html>
